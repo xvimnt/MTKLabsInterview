@@ -4,6 +4,8 @@ from fuzzywuzzy import process
 from io import StringIO
 import xml.etree.ElementTree as ET
 import zipfile
+import re
+
 
 def get_string_from_file(file_path):
 
@@ -47,7 +49,8 @@ def main(input_file, output_file):
     readed = get_string_from_file(input_file)
 
     # Load data from CSV with detected encoding
-    df = pd.DataFrame([x.split(',') for x in readed.split('\n')])
+    COMMA_MATCHER = re.compile(r",(?=(?:[^\"']*[\"'][^\"']*[\"'])*[^\"']*$)")
+    df = pd.DataFrame([COMMA_MATCHER.split(x) for x in readed.split('\n')])
 
     # Define the first row as header
     df.columns = df.iloc[0]
