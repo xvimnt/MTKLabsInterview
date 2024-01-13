@@ -29,20 +29,17 @@ def get_string_from_file(file_path):
 
 
 def normalize_company_name(name):
-    # Check for None values
-    if name is not None:
+    if isinstance(name, str):
         # Remove legal structure indicators and normalize whitespace
         name = name.upper().replace(" INC", "").replace(" LLC", "").replace(" LLP", "").strip()
     return name
 
 def find_canonical_name(name, canonical_names):
-    if name is not None:
-        # Normalize the name before fuzzy matching
-        normalized_name = normalize_company_name(name)
+    if isinstance(name, str):
         # Use fuzzy matching to find the best match
-        best_match, _ = process.extractOne(normalized_name, canonical_names, scorer=fuzz.token_sort_ratio)
+        best_match, _ = process.extractOne(name, canonical_names, scorer=fuzz.token_sort_ratio)
         return best_match
-    return name
+    return None
 
 def main(input_file, output_file):
     # read file into string
@@ -57,13 +54,10 @@ def main(input_file, output_file):
     df = df[1:]
 
     # Define canonical company names
-    canonical_names = ["MICROSOFT TECHNOLOGY LICENSING", "MICRON TECHNOLOGY", "ELTA SYSTEMS", "DELTA SYSTEMS"]
-
-    # Normalize company names
-    df['normalized_company_name'] = df['organization'].apply(normalize_company_name)
+    canonical_names = df['organization'].apply(normalize_company_name).unique()
 
     # Find canonical names for each normalized name
-    df['canonical_company_name'] = df['normalized_company_name'].apply(lambda x: find_canonical_name(x, canonical_names))
+    df['normalized_company_name'] = df['organization'].apply(normalize_company_name).apply(lambda x: find_canonical_name(x, canonical_names))
 
     # Save the result to a new CSV file
     df.to_csv(output_file, index=False)
