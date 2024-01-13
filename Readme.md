@@ -12,11 +12,10 @@ This script normalizes company names in a CSV file, attributing patents to canon
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/your-repository.git
+   git clone https://github.com/xvimnt/MTKLabsInterview.git
    ```
 
 ````
-
 
 1. Navigate to the project directory:
 
@@ -57,10 +56,6 @@ Replace `input_file.csv` with the path to your input CSV file and `output_file.c
 ## Contributing
 
 If you find issues or have suggestions for improvements, please open an issue or submit a pull request.
-
-## License
-
-This project is licensed under the [Your License Name] License - see the [LICENSE.md](https://chat.openai.com/c/LICENSE.md) file for details.
 
 ```javascript
 Remember to customize placeholders such as `your-username`, `your-repository`, and `[Your License Name]` with the relevant information for your script and repository.
